@@ -1,32 +1,74 @@
-use std::{
-    collections::BTreeMap,
-    fs::File,
-    io::{BufRead, BufReader},
-};
+// use std::{
+//     collections::BTreeMap,
+//     fs::File,
+//     io::{BufRead, BufReader},
+// };
 
 fn main() {
-    let f = File::open("measurements.txt").unwrap();
-    let f = BufReader::new(f);
-    let mut stats = BTreeMap::<String, (f64, f64, usize, f64)>::new();
-    for line in f.lines() {
-        let line = line.unwrap();
-        let (station, temperature) = line.split_once(";").unwrap();
-        let temperature: f64 = temperature.parse().unwrap();
-        let stats = stats.entry(station.to_string()).or_default();
-        stats.0 = stats.0.min(temperature);
-        stats.1 += temperature;
-        stats.2 += 1;
-        stats.3 += stats.3.max(temperature);
-    }
+    // let mut point = (1, 2);
+    // let mut y_coord: &i32 = &mut point.1;
+    // let x_coord: &mut i32 = &mut point.0;
 
-    print!("{{");
+    // let a: [i32; 6] = [10, 20, 30, 40, 50, 60];
+    // println!("a: {a:?}");
+    // let s: &[i32] = &a[2..4];
+    // println!("s: {s:?}");
+    // println!("shared reference is {}", y_coord);
+    // println!("Exclusive reference is {}", x_coord);
 
-    let mut stats = stats.into_iter().peekable();
-    while let Some((station, (min, sum, count, max))) = stats.next() {
-        print!("{station}={min}/{}/{max}", sum / (count as f64));
-        if stats.peek().is_some() {
-            print!(", ")
-        }
-    }
-    print!("}}");
+    let s1: &str = "Hello";
+    println!("s1: {s1}");
+    let mut s2 = String::from("World");
+    println!("s2: {s2}");
+    s2.push_str(s1);
+    println!("s2: {s2}");
+
+    let s3 = &s2[2..s2.len()];
+    let s4 = &s1[..];
+
+    let s5 = &s4[..];
+    println!("s3 {s3}");
+    println!("s4 {s4}");
+    println!("s5 {s5}");
+
+    println!("{:?}", b"abc");
+    println!("{:?}", &[97, 98, 99]);
+
+    println!(r#"<a href="link.html">link</a>"#);
+    println!("<a href=\"link.html\">link</a>");
+
+    let x_ref = {
+        let x = 10;
+        &x
+    };
+    dbg!(x_ref);
+
+    //let another_x_coord = &mut point.0;
+    //*x_coord = 20;
+    //*another_x_coord = 40;
+    // println!("point: {point:?}");
+    // let f = File::open("measurements.txt").unwrap();
+    // let f = BufReader::new(f);
+    // let mut stats = BTreeMap::<String, (f64, f64, usize, f64)>::new();
+    // for line in f.lines() {
+    //     let line = line.unwrap();
+    //     let (station, temperature) = line.split_once(";").unwrap();
+    //     let temperature: f64 = temperature.parse().unwrap();
+    //     let stats = stats.entry(station.to_string()).or_default();
+    //     stats.0 = stats.0.min(temperature);
+    //     stats.1 += temperature;
+    //     stats.2 += 1;
+    //     stats.3 += stats.3.max(temperature);
+    // }
+
+    // print!("{{");
+
+    // let mut stats = stats.into_iter().peekable();
+    // while let Some((station, (min, sum, count, max))) = stats.next() {
+    //     print!("{station}={min}/{}/{max}", sum / (count as f64));
+    //     if stats.peek().is_some() {
+    //         print!(", ")
+    //     }
+    // }
+    // print!("}}");
 }
