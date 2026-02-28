@@ -1,5 +1,5 @@
 use std::{
-    collections::{BTreeMap, HashMap},
+    collections::HashMap,
     fs::File,
     io::{BufRead, BufReader},
 };
@@ -93,7 +93,8 @@ fn main() {
     }
 
     print!("{{");
-    let stats = BTreeMap::from_iter(stats);
+    let mut stats: Vec<_> = stats.into_iter().collect();
+    stats.sort_unstable_by(|a, b| a.0.cmp(&b.0));
     let mut stats = stats.into_iter().peekable();
     while let Some((station, (min, sum, count, max))) = stats.next() {
         print!("{station}={min}/{}/{max}", sum / (count as f64));
