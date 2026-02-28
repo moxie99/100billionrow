@@ -1,24 +1,24 @@
-// use std::{
-//     collections::BTreeMap,
-//     fs::File,
-//     io::{BufRead, BufReader},
-// };
+use std::{
+    collections::BTreeMap,
+    fs::File,
+    io::{BufRead, BufReader},
+};
 
 /// Calculate the magnitude of the given vector.
-fn magnitude(vector: &[f64; 3]) -> f64 {
-    let mut mag_squared = 0.0;
-    for coord in vector {
-        mag_squared += coord * coord;
-    }
-    mag_squared.sqrt()
-}
+// fn magnitude(vector: &[f64; 3]) -> f64 {
+//     let mut mag_squared = 0.0;
+//     for coord in vector {
+//         mag_squared += coord * coord;
+//     }
+//     mag_squared.sqrt()
+// }
 /// Change the magnitude of the vector to 1.0 without changing its direction.
-fn normalize(vector: &mut [f64; 3]) {
-    let mag = magnitude(vector);
-    for item in vector {
-        *item /= mag;
-    }
-}
+// fn normalize(vector: &mut [f64; 3]) {
+//     let mag = magnitude(vector);
+//     for item in vector {
+//         *item /= mag;
+//     }
+// }
 
 fn main() {
     // let mut point = (1, 2);
@@ -32,68 +32,68 @@ fn main() {
     // println!("shared reference is {}", y_coord);
     // println!("Exclusive reference is {}", x_coord);
 
-    println!(
-        "Magnitude of a unit vector: {}",
-        magnitude(&[0.0, 1.0, 0.0])
-    );
-    let mut v = [1.0, 2.0, 9.0];
-    println!("Magnitude of {v:?}: {}", magnitude(&v));
-    normalize(&mut v);
-    println!("Magnitude of {v:?} after normalization: {}", magnitude(&v));
+    // println!(
+    //     "Magnitude of a unit vector: {}",
+    //     magnitude(&[0.0, 1.0, 0.0])
+    // );
+    // let mut v = [1.0, 2.0, 9.0];
+    // println!("Magnitude of {v:?}: {}", magnitude(&v));
+    // normalize(&mut v);
+    // println!("Magnitude of {v:?} after normalization: {}", magnitude(&v));
 
-    let s1: &str = "Hello";
-    println!("s1: {s1}");
-    let mut s2 = String::from("World");
-    println!("s2: {s2}");
-    s2.push_str(s1);
-    println!("s2: {s2}");
+    // let s1: &str = "Hello";
+    // println!("s1: {s1}");
+    // let mut s2 = String::from("World");
+    // println!("s2: {s2}");
+    // s2.push_str(s1);
+    // println!("s2: {s2}");
 
-    let s3 = &s2[2..s2.len()];
-    let s4 = &s1[..];
+    // let s3 = &s2[2..s2.len()];
+    // let s4 = &s1[..];
 
-    let s5 = &s4[..];
-    println!("s3 {s3}");
-    println!("s4 {s4}");
-    println!("s5 {s5}");
+    // let s5 = &s4[..];
+    // println!("s3 {s3}");
+    // println!("s4 {s4}");
+    // println!("s5 {s5}");
 
-    println!("{:?}", b"abc");
-    println!("{:?}", &[97, 98, 99]);
+    // println!("{:?}", b"abc");
+    // println!("{:?}", &[97, 98, 99]);
 
-    println!(r#"<a href="link.html">link</a>"#);
-    println!("<a href=\"link.html\">link</a>");
+    // println!(r#"<a href="link.html">link</a>"#);
+    // println!("<a href=\"link.html\">link</a>");
 
-    let x_ref = {
-        let x = 10;
-        &x
-    };
-    dbg!(x_ref);
+    // let x_ref = {
+    //     let x = 10;
+    //     &x
+    // };
+    // dbg!(x_ref);
 
     //let another_x_coord = &mut point.0;
     //*x_coord = 20;
     //*another_x_coord = 40;
     // println!("point: {point:?}");
-    // let f = File::open("measurements.txt").unwrap();
-    // let f = BufReader::new(f);
-    // let mut stats = BTreeMap::<String, (f64, f64, usize, f64)>::new();
-    // for line in f.lines() {
-    //     let line = line.unwrap();
-    //     let (station, temperature) = line.split_once(";").unwrap();
-    //     let temperature: f64 = temperature.parse().unwrap();
-    //     let stats = stats.entry(station.to_string()).or_default();
-    //     stats.0 = stats.0.min(temperature);
-    //     stats.1 += temperature;
-    //     stats.2 += 1;
-    //     stats.3 += stats.3.max(temperature);
-    // }
+    let f = File::open("measurements.txt").unwrap();
+    let f = BufReader::new(f);
+    let mut stats = BTreeMap::<String, (f64, f64, usize, f64)>::new();
+    for line in f.lines() {
+        let line = line.unwrap();
+        let (station, temperature) = line.split_once(";").unwrap();
+        let temperature: f64 = temperature.parse().unwrap();
+        let stats = stats.entry(station.to_string()).or_default();
+        stats.0 = stats.0.min(temperature);
+        stats.1 += temperature;
+        stats.2 += 1;
+        stats.3 += stats.3.max(temperature);
+    }
 
-    // print!("{{");
+    print!("{{");
 
-    // let mut stats = stats.into_iter().peekable();
-    // while let Some((station, (min, sum, count, max))) = stats.next() {
-    //     print!("{station}={min}/{}/{max}", sum / (count as f64));
-    //     if stats.peek().is_some() {
-    //         print!(", ")
-    //     }
-    // }
-    // print!("}}");
+    let mut stats = stats.into_iter().peekable();
+    while let Some((station, (min, sum, count, max))) = stats.next() {
+        print!("{station}={min}/{}/{max}", sum / (count as f64));
+        if stats.peek().is_some() {
+            print!(", ")
+        }
+    }
+    print!("}}");
 }
